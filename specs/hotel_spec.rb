@@ -8,8 +8,8 @@ require_relative('../room_service.rb')
 class TestHotel < Minitest::Test
 
 def setup
-  @room1 = Room.new(1, "Double", "Yes", 75, 2)
-  @room2 = Room.new(2, "Single", "Yes", 50, 1)
+  @room1 = Room.new(1, "Double", "Yes",  75, 2)
+  @room2 = Room.new(2, "Single", "Yes",  50, 1)
   @room3 = Room.new(3, "Twin", "Yes", 75, 2)
   @room4 = Room.new(4, "Double", "Yes", 75, 2)
   @room5 = Room.new(5, "Single", "Yes", 50, 1)
@@ -19,6 +19,8 @@ def setup
   @food2 = RoomService.new("Pizza", 7.50)
   @wine = RoomService.new("Pinot", 22)
   @champagne = RoomService.new("Moet", 50)
+  room_service = [@food1,@food2,@wine,@champagne]
+
 
   @guest1 = People.new("Mr","Jim", 1)
   @guest2 = People.new("Miss", "Claudia", 2)
@@ -27,7 +29,7 @@ def setup
   @guest5 = People.new("Mr", "Crabby", 1)
   @guest6 = People.new('Mrs', "Gael", 2)
   rooms = [@room1,@room2,@room3,@room4,@room5,@room6]
-  @hotel = Hotel.new("Faulty Towers", rooms)
+  @hotel = Hotel.new("Faulty Towers", rooms, room_service)
 end
 
   def test_check_in()
@@ -70,8 +72,22 @@ end
   end
 
   def test_change_available()
-  @hotel.add_person_to_room(@guest1)
-  assert_equal("No", @hotel.change_available(@room2))
+    @hotel.add_person_to_room(@guest1)
+    assert_equal("No", @hotel.change_available(@room2))
+  end
+
+  def test_order_room_service()
+    @hotel.check_in(@guest1)
+    @hotel.order_room_service(@room2,@food1)
+    assert_equal([50, 5], @room2.bill)
+  end
+
+  def test_total_bill()
+    @hotel.check_in(@guest1)
+    @hotel.order_room_service(@room2,@food1)
+    @hotel.order_room_service(@room2,@food1)
+    assert_equal(60, @room2.total_bill)
+    assert_equal([@food1, @food1, 50], @hotel.print_receipt(@room2))
   end
 
 

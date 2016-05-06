@@ -1,11 +1,12 @@
 require("pry-byebug")
 class Hotel
 
-  attr_accessor(:hotel_name, :rooms)
+  attr_accessor(:hotel_name, :rooms, :room_service)
 
-  def initialize(hotel_name, rooms)
+  def initialize(hotel_name, rooms, room_service)
     @hotel_name = hotel_name
     @rooms = rooms
+    @room_service = room_service
   end
 
 
@@ -37,6 +38,7 @@ class Hotel
       @rooms.each do |room|
          if room.available == "Yes" && room.max_persons == person.number_in_party
           room.who << person
+          charge_for_room(room)
           change_available(room)
         return true
         end
@@ -63,6 +65,23 @@ class Hotel
     end
   end
 
+  def order_room_service(room, item)
+    @room_service.each do |food|
+      if room.available == "No" && food.name == item.name
+        room.bill << food.price
+        room.receipt << food
+      end
+    end
+    return room.bill
+  end
 
+  def charge_for_room(room)
+    room.bill << room.price
+  end
+
+  def print_receipt(room)
+    room.receipt << room.price
+    return room.receipt
+  end
 
 end
