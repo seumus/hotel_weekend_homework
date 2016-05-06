@@ -69,7 +69,7 @@ class Hotel
     @room_service.each do |food|
       if room.available == "No" && food.name == item.name
         room.bill << food.price
-        room.receipt << food
+        room.receipt << food.name
       end
     end
     return room.bill
@@ -80,7 +80,8 @@ class Hotel
   end
 
   def print_receipt(room)
-    room.receipt << room.price
+    room.receipt << "Room Price"
+    room.receipt <<  ["Total due: #{room.total_bill}"]
     return room.receipt
   end
 

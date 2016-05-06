@@ -17,7 +17,7 @@ def setup
 
   @food1 = RoomService.new("Cheeseburger", 5)
   @food2 = RoomService.new("Pizza", 7.50)
-  @wine = RoomService.new("Pinot", 22)
+  @wine = RoomService.new("Pinot Grigio", 22)
   @champagne = RoomService.new("Moet", 50)
   room_service = [@food1,@food2,@wine,@champagne]
 
@@ -53,18 +53,6 @@ end
 
   end
 
-  def test_add_person()
-    # assert_equal("Jim", @hotel.add_person_to_room(@guest1, @room2))
-    # assert_equal("No", @hotel.change_available(@room2))
-  end
-
-
-
-  # def test_group_check_in()
-  #   guests = [@guest1, @guest2]
-  #   rooms = [@room2, @room5]
-  #   assert_equal(["Jim", "Claudia"], @hotel.group_check_in(guests, rooms))
-  # end
 
   def test_check_out()
     @hotel.add_person_to_room(@guest1)
@@ -84,10 +72,14 @@ end
 
   def test_total_bill()
     @hotel.check_in(@guest1)
+    @hotel.check_in(@guest3)
     @hotel.order_room_service(@room2,@food1)
-    @hotel.order_room_service(@room2,@food1)
-    assert_equal(60, @room2.total_bill)
-    assert_equal([@food1, @food1, 50], @hotel.print_receipt(@room2))
+    @hotel.order_room_service(@room2,@wine)
+    @hotel.order_room_service(@room6,@food2)
+    @hotel.order_room_service(@room6,@champagne)
+    assert_equal(77, @room2.total_bill)
+    assert_equal(1057.5, @room6.total_bill)
+    assert_equal(["Cheeseburger", "Pinot Grigio", "Room Price", ["Total due: 77"]], @hotel.print_receipt(@room2))
   end
 
 
