@@ -83,6 +83,16 @@ class HotelChain
       return room.receipt
     end
 
+    # def split_party(person)
+    #   puts "No rooms that size available, would you like to split your party?: "
+    #   answer = gets.chomp
+    #   if answer == "yes"
+    #     puts "By how many? "
+    #     num = gets.chomp
+    #     split = person.number_in_party / num.to_i
+    #   end
+    # end
+
 
 
 
